@@ -12,14 +12,14 @@ declare branches=(
 # Current nginx versions
 # Remember to update pkgosschecksum when changing this.
 declare -A nginx=(
-    [mainline]='1.21.4'
-    [stable]='1.20.2'
+    [mainline]='1.21.6'
+    [stable]='1.22.0'
 )
 
 # Current njs versions
 declare -A njs=(
-    [mainline]='0.7.0'
-    [stable]='0.7.0'
+    [mainline]='0.7.3'
+    [stable]='0.7.4'
 )
 
 # Current package patchlevel version
@@ -36,7 +36,7 @@ declare -A debian=(
 
 declare -A alpine=(
     [mainline]='3.15'
-    [stable]='3.14'
+    [stable]='3.16'
 )
 
 # When we bump njs version in a stable release we don't move the tag in the
@@ -44,17 +44,16 @@ declare -A alpine=(
 # when building alpine packages on architectures not supported by nginx.org
 # Remember to update pkgosschecksum when changing this.
 declare -A rev=(
-    [mainline]='${NGINX_VERSION}-${PKG_RELEASE}'
-    [stable]='${NGINX_VERSION}-${PKG_RELEASE}'
-    #[stable]='500'
+    [mainline]='688'
+    [stable]='696'
 )
 
 # Holds SHA512 checksum for the pkg-oss tarball produced by source code
 # revision/tag in the previous block
 # Used in alpine builds for architectures not packaged by nginx.org
 declare -A pkgosschecksum=(
-    [mainline]='f917c27702aa89cda46878fc80d446839c592c43ce7f251b3f4ced60c7033d34496a92d283927225d458cbc4f2f89499e7fb16344923317cd7725ad722eaf93e'
-    [stable]='af6e7eb25594dffe2903358f7a2c5c956f5b67b8df3f4e8237c30b63e50ce28e6eada3ed453687409beef8f3afa8f551cb20df2f06bd5e235eb66df212ece2ed'
+    [mainline]='a8ab6ff80ab67c6c9567a9103b52a42a5962e9c1bc7091b7710aaf553a3b484af61b0797dd9b048c518e371a6f69e34d474cfaaeaa116fd2824bffa1cd9d4718'
+    [stable]='fabf394af60d935d7c3f5e36db65dddcced9595fd06d3dfdfabbb77aaea88a5b772ef9c1521531673bdbb2876390cdea3b81c51030d36ab76cf5bfc0bfe79230'
 )
 
 get_packages() {
@@ -151,7 +150,7 @@ for branch in "${branches[@]}"; do
         packages=$(get_packages "$variant" "$branch")
         packagever=$(get_packagever "$variant" "$branch")
 
-        sed -i \
+        sed -i.bak \
             -e 's,%%ALPINE_VERSION%%,'"$alpinever"',' \
             -e 's,%%DEBIAN_VERSION%%,'"$debianver"',' \
             -e 's,%%NGINX_VERSION%%,'"$nginxver"',' \
